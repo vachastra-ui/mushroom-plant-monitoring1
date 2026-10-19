@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#143c32">
+  <meta name="description" content="VACHASTRA mushroom room environmental monitoring">
+  <title>VACHASTRA Monitor</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-mark">V</div>
+    <div class="brand-copy">
+      <div class="eyebrow">MUSHROOM ENVIRONMENT</div>
+      <h1>VACHASTRA Monitor</h1>
+    </div>
+    <button id="refreshBtn" class="icon-button" aria-label="Refresh readings" title="Refresh">↻</button>
+  </header>
+
+  <main>
+    <section class="setup-panel" id="setupPanel">
+      <h2>Connect your cloud dashboard</h2>
+      <p>Paste the deployed Google Apps Script web app URL ending in <code>/exec</code>. This is the URL you use to open your existing cloud dashboard.</p>
+      <label for="endpointInput">Google Apps Script web app URL</label>
+      <input id="endpointInput" type="url" inputmode="url" placeholder="https://script.google.com/macros/s/.../exec" autocomplete="url">
+      <button id="saveEndpointBtn" class="primary-button">Connect dashboard</button>
+      <p class="small-note">The app reads the latest data from your existing Google Sheet. Keep the deployment URL private if your data should not be public.</p>
+    </section>
+
+    <section id="appContent" hidden>
+      <div class="summary-row">
+        <div>
+          <div class="eyebrow">YOUR GROW ROOMS</div>
+          <h2>Room overview</h2>
+        </div>
+        <span id="connectionBadge" class="status-pill status-wait">Connecting…</span>
+      </div>
+
+      <div id="roomCards" class="room-grid">
+        <div class="empty-card">Waiting for readings…</div>
+      </div>
+
+      <section class="panel">
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow">TREND HISTORY</div>
+            <h2>Room trends</h2>
+          </div>
+          <select id="roomSelect" aria-label="Select room">
+            <option value="">Select room</option>
+          </select>
+        </div>
+        <p id="chartHint" class="muted">Historical readings will appear here when data is available.</p>
+        <div class="chart-block">
+          <div class="chart-title"><span class="dot co2"></span> CO₂ <span class="unit">ppm</span></div>
+          <div id="co2Chart" class="chart"></div>
+        </div>
+        <div class="chart-block">
+          <div class="chart-title"><span class="dot temp"></span> Temperature <span class="unit">°C</span></div>
+          <div id="tempChart" class="chart"></div>
+        </div>
+        <div class="chart-block">
+          <div class="chart-title"><span class="dot hum"></span> Humidity <span class="unit">%</span></div>
+          <div id="humChart" class="chart"></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow">RECENT DATA</div>
+            <h2>Latest readings</h2>
+          </div>
+          <button id="csvBtn" class="secondary-button">Export CSV</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Date &amp; time</th><th>Room</th><th>CO₂ (ppm)</th><th>Temp (°C)</th><th>Humidity (%)</th></tr>
+            </thead>
+            <tbody id="readingsBody"><tr><td colspan="5" class="muted">No readings loaded.</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="footer-panel">
+        <div><strong>Last app refresh</strong><span id="lastRefresh">—</span></div>
+        <div><strong>Data source</strong><span>Arduino → Google Apps Script → Google Sheets</span></div>
+        <button id="changeEndpointBtn" class="text-button">Change dashboard URL</button>
+      </section>
+    </section>
+
+    <div id="message" class="message" role="status" aria-live="polite"></div>
+  </main>
+
+  <footer>VACHASTRA · Environmental monitoring</footer>
+  <script src="app.js"></script>
+</body>
+</html>
